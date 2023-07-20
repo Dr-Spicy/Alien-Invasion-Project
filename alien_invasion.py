@@ -18,11 +18,14 @@ class AlienInvasion:
         """
         self.clock = pygame.time.Clock()
 
+        self.settings = Settings()
+
         # Call this display.set_mode to create a display window, on which we
         # sho w the graphics of the game. We assign this display window to
         # the self. display window, and it will be available in all methods
         # in the class.
-        self.screen = pygame.display.set_mode((1200, 800))
+        self.screen = pygame.display.set_mode(
+            (self.settings.screen_width,self.settings.screen_height))
         # This attribute is called a surface, aka a part of the screen where
         # game elements are displayed. The surface returned by
         # display.set_mode reps the entire game window. Once the game's
@@ -31,7 +34,7 @@ class AlienInvasion:
         # user input
         pygame.display.set_caption("Alien Invasion")
         # Set the background color.
-        self.bg_color = (230, 230, 230)
+        self.bg_color = (self.settings.bg_color)
 
     def run_game(self):
         """Start the main loop for the game."""
