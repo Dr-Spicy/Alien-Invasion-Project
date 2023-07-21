@@ -2,6 +2,7 @@ import sys
 import pygame
 
 from settings import Settings
+from ship import Ship
 
 
 class AlienInvasion:
@@ -26,7 +27,7 @@ class AlienInvasion:
         # the self. display window, and it will be available in all methods
         # in the class.
         self.screen = pygame.display.set_mode(
-            (self.settings.screen_width,self.settings.screen_height))
+            (self.settings.screen_width, self.settings.screen_height))
         # This attribute is called a surface, aka a part of the screen where
         # game elements are displayed. The surface returned by
         # display.set_mode reps the entire game window. Once the game's
@@ -34,24 +35,32 @@ class AlienInvasion:
         # pass of the loop, so it can be updated with any changes trigger by
         # user input
         pygame.display.set_caption("Alien Invasion")
-        # Set the background color.
-        self.bg_color = (self.settings.bg_color)
+
+        # Make an instance of Ship after the screen has been created
+        # The self argument here refers to an instance of 'AlienInvasion'
+        self.ship = Ship(self)
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             # Watch for keyboard and mouse events.
             for event in pygame.event.get():
-                # The pygame.event.get() returns a list of events that have taken
-                # place since the last time this function called.
+                # The pygame.event.get() returns a list of events that have
+                # taken place since the last time this function called.
                 if event.type == pygame.QUIT:
                     sys.exit()
-            """Re-draw the screen during each pass through the loop by the fill method."""
-            self.screen.fill(self.bg_color)
+            """Re-draw the screen during each pass through the loop by the 
+            fill method."""
+            self.screen.fill(self.settings.bg_color)
+            """draw the ship on the background"""
+            self.ship.blitme()
+
             # Make the most recently drawn screen visible.
             pygame.display.flip()
-            """the tick() method takes one argument: the frame rate fro the game. """
+            """the tick() method takes one argument: the frame rate fro the 
+            game."""
             self.clock.tick(60)
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
