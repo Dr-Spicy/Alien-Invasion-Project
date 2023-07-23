@@ -1,12 +1,14 @@
 import pygame
 
+
 class Ship:
     """A class to manage the ship."""
     """
     Pygame is efficient b/c it treats all shaped elements as rectangles(rects).
     Especially when computing the collide
     """
-    def __init__(self, ai_game): # ai_game refer to the current instance of the
+
+    def __init__(self, ai_game):  # ai_game refer to the current instance of the
         # AlienInvasion class.
         """Initialize the ship and set its starting position."""
 
@@ -46,7 +48,17 @@ class Ship:
 
         self.rect.midbottom = self.screen_rect.midbottom
 
+        # Movement flag: start with a ship that's not moving.
+        self.moving_right = False
+        self.moving_left = False
+
+    def update(self):
+        """Update the ship's location based on the movement flag."""
+        if self.moving_right:
+            self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
+
     def blitme(self):
         """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
-
