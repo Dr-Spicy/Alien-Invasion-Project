@@ -1,4 +1,3 @@
-import sys
 import pygame
 
 from settings import Settings
@@ -12,6 +11,7 @@ class AlienInvasion:
         """Initialize the game, and create game resources."""
         # initializes the background setting that Pygame needs to work smoothly
         pygame.init()
+        self.running = True
         """
         We make a clock and ensure it ticks once on each pass of the loop. If 
         the loop processes faster than the rate we define, pygame will calculate
@@ -36,7 +36,6 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
         '''
 
-
         # This attribute is called a surface, aka a part of the screen where
         # game elements are displayed. The surface returned by
         # display.set_mode reps the entire game window. Once the game's
@@ -51,7 +50,7 @@ class AlienInvasion:
 
     def run_game(self):
         """Start the main loop for the game."""
-        while True:
+        while self.running:
             # Watch for keyboard and mouse events.
             self._check_events()
             """Update the location of the ship"""
@@ -67,16 +66,15 @@ class AlienInvasion:
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                self.running = False
 
-        # Set the method to control the FLAG of ship to move right
+            # Set the method to control the FLAG of ship to move right
             # Use a single keydown to register a single movement
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             # Use a keyup to reflect a continuous movement
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
@@ -94,7 +92,7 @@ class AlienInvasion:
             self.ship.moving_left = True
         # Quit on ESC
         elif event.key == pygame.K_ESCAPE:
-            sys.exit()
+            self.running = False
 
     def _check_keyup_events(self, event):
         """Respond to keyup events"""
@@ -102,6 +100,7 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
