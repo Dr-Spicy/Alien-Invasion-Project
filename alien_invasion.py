@@ -28,6 +28,15 @@ class AlienInvasion:
         # in the class.
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
+
+        """If we wanna run in full-screen, use the rest codes."""
+        '''
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+        '''
+
+
         # This attribute is called a surface, aka a part of the screen where
         # game elements are displayed. The surface returned by
         # display.set_mode reps the entire game window. Once the game's
@@ -83,8 +92,8 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-        # Quit on Q
-        elif event.key == pygame.K_q:
+        # Quit on ESC
+        elif event.key == pygame.K_ESCAPE:
             sys.exit()
 
     def _check_keyup_events(self, event):
