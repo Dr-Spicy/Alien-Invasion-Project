@@ -63,16 +63,10 @@ class AlienInvasion:
         # Set the method to control the FLAG of ship to move right
             # Use a single keydown to register a single movement
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                   self.ship.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_events(event)
             # Use a keyup to reflect a continuous movement
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_events(event)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
@@ -81,6 +75,20 @@ class AlienInvasion:
         self.ship.blitme()
         # Make the most recently drawn screen visible.
         pygame.display.flip()
+
+    def _check_keydown_events(self, event):
+        """Respond to keydown events"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+
+    def _check_keyup_events(self, event):
+        """Respond to keyup events"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
