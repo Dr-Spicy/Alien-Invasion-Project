@@ -11,8 +11,9 @@ class Ship:
     def __init__(self, ai_game):  # ai_game refer to the current instance of the
         # AlienInvasion class.
         """Initialize the ship and set its starting position."""
-
-        self.screen = ai_game.screen
+        # The screen background is inherited from the game as well as the
+        # settings
+        self.screen, self.settings = ai_game.screen, ai_game.settings
         # We access the screen's 'rect' attr using the get_rect() method
         # Doing so allows us to place the ship in the right place on the screen
         self.screen_rect = ai_game.screen.get_rect()
@@ -45,8 +46,11 @@ class Ship:
         """
 
         # Start each new ship at the bottom center of the screen.
-
         self.rect.midbottom = self.screen_rect.midbottom
+
+        # Store a float for the ship's exact horizontal location.
+        # self.rect.x only works with integers
+        self.x = float(self.rect.x)
 
         # Movement flag: start with a ship that's not moving.
         self.moving_right = False
@@ -54,10 +58,14 @@ class Ship:
 
     def update(self):
         """Update the ship's location based on the movement flag."""
+        # Update the ship's x_value by ship speed instead of the rect.x
         if self.moving_right:
-            self.rect.x += 1
+            self.x += self.settings.ship_speed
         if self.moving_left:
-            self.rect.x -= 1
+            self.x -= self.settings.ship_speed
+
+        # update rect object from self.x
+        self.rect.x = self.x
 
     def blitme(self):
         """Draw the ship at its current location."""
