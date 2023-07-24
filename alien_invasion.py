@@ -2,6 +2,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -47,6 +48,9 @@ class AlienInvasion:
         # Make an instance of Ship after the screen has been created
         # The self argument here refers to an instance of 'AlienInvasion'
         self.ship = Ship(self)
+        # Make an instance of pygame.sprite.Group class to store manage all
+        # active bullets, and bullets get drawn and updated each loop.
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -55,6 +59,8 @@ class AlienInvasion:
             self._check_events()
             """Update the location of the ship"""
             self.ship.update()
+            """Update the locations of the bullets group"""
+            self.bullets.update()
             """Re-draw the screen during each pass through the loop by the 
                        fill method."""
             self._update_screen()
@@ -79,6 +85,12 @@ class AlienInvasion:
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
+        """Update the fired bullets"""
+        # bullet.sprites() method returns a list of all sprites in the group of
+        # bullets. loop thru them and do .draw_bullet()
+        # placed before the ship, so bullets do not start out on top of ship
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         """draw the ship on the background"""
         self.ship.blitme()
         # Make the most recently drawn screen visible.
@@ -93,6 +105,9 @@ class AlienInvasion:
         # Quit on ESC
         elif event.key == pygame.K_ESCAPE:
             self.running = False
+        # Firing bullets on SPACE
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         """Respond to keyup events"""
@@ -100,6 +115,16 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        # make an instance of bullet and call it new_bullet
+        new_bullet = Bullet(self)
+        # Add to the group bullets by .add(), who is similar to append() but
+        # specific for Pygame groups.
+        self.bullets.add(new_bullet)
+
+
 
 
 if __name__ == '__main__':
