@@ -115,11 +115,42 @@ class AlienInvasion:
     def _create_fleet(self):
         """Create the fleet of aliens"""
 
-        # Make an alien
+        # Create an alien and keep adding aliens until no room
+        # Spacing between aliens is one alien's width and one alien's height
         alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+
+        # register the x and y location to add a new alien
+        # assign the first location as 1 width from the left
+        current_x, current_y = alien_width, alien_height
+        # A rect's size attribute is a tuple containing its width and height.
+
+        # so long as there's room vertically
+        while current_y < (self.settings.screen_height - 4 * alien_height):
+            # So long as the location to add can fits one more alien
+            while current_x < (self.settings.screen_width - 2 * alien_width):
+                # Create new alien at the current_x and current_y
+                self._create_alien(current_x, current_y)
+                # Increment the location to work by 2 width
+                current_x += 2 * alien_width
+
+            # Finished a row; reset x_value, and increment y_value by 2 heights
+            current_x = alien_width
+            current_y += 2 * alien_height
+
+    def _create_alien(self, x_pos, y_pos):
+        """Create an alien and place it in the row's x position on the y
+        positioned row"""
+        # Add a new alien instance
+        new_alien = Alien(self)
+
+        # Align the pos of new alien and the location to add
+        # do the same for the rectangle of new alien
+        new_alien.x, new_alien.y = x_pos, y_pos
+        new_alien.rect.x, new_alien.rect.y = x_pos, y_pos
 
         # Add the new alien to the group that manages the fleet.
-        self.aliens.add(alien)
+        self.aliens.add(new_alien)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
