@@ -61,6 +61,13 @@ class AlienInvasion:
             self.ship.update()
             """Update the locations of the bullets group"""
             self.bullets.update()
+            """Get rid of bullets out of screen"""
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <0:
+                    # If a bullet reaches top, remove
+                    self.bullets.remove(bullet)
+            # A print to show how many bullets current exist in the game
+            # print(len(self.bullets))
             """Re-draw the screen during each pass through the loop by the 
                        fill method."""
             self._update_screen()
