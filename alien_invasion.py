@@ -76,6 +76,9 @@ class AlienInvasion:
             """Get rid of bullets out of screen"""
             self._update_bullets()
 
+            """Move the alien fleet right and downwards"""
+            self._update_alien()
+
             """Re-draw the screen during each pass through the loop by the 
                        fill method."""
             self._update_screen()
@@ -149,6 +152,10 @@ class AlienInvasion:
 
         # Add the new alien to the group that manages the fleet.
         self.aliens.add(new_alien)
+
+    def _update_alien(self):
+        """Update the positions of the alien fleet."""
+        self.aliens.update()
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
