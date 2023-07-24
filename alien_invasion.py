@@ -153,8 +153,26 @@ class AlienInvasion:
         # Add the new alien to the group that manages the fleet.
         self.aliens.add(new_alien)
 
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens have reached an edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges(): # True if an alien is at edges and fleet
+                # need to turn
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet's direction"""
+        for alien in self.aliens.sprites():
+            # Drop the entire fleet
+            alien.rect.y += self.settings.fleet_drop_speed
+        # Invert the fleet movement direction
+        self.settings.fleet_direction *= -1
+
     def _update_alien(self):
-        """Update the positions of the alien fleet."""
+        """ Check if the fleet is at an edge,Update the positions of the
+        alien fleet."""
+        self._check_fleet_edges()
         self.aliens.update()
 
     def _update_screen(self):

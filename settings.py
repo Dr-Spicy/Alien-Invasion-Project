@@ -20,3 +20,9 @@ class Settings:
 
         # Alien settings
         self.alien_speed = 1.
+        # fleet_drop_spd controls how quickly it drops when hitting the right edge
+        self.fleet_drop_speed = 10
+
+        # fleet direction of 1 represents right, ; -1 reps left
+        # This is more elegent than using a if-elif statement
+        self.fleet_direction = 1
