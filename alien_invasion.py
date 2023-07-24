@@ -15,12 +15,10 @@ class AlienInvasion:
         # initializes the background setting that Pygame needs to work smoothly
         pygame.init()
         self.running = True
-        """
-        We make a clock and ensure it ticks once on each pass of the loop. If 
-        the loop processes faster than the rate we define, pygame will calculate
-        the correct amount of time to pause so that the game runs at a consiste
-        nt rate. 
-        """
+        """We make a clock and ensure it ticks once on each pass of the loop. 
+        If the loop processes faster than the rate we define, pygame will 
+        calculate the correct amount of time to pause so that the game runs 
+        at a consistent rate."""
         self.clock = pygame.time.Clock()
 
         self.settings = Settings()
@@ -127,7 +125,7 @@ class AlienInvasion:
 
         # so long as there's room vertically
         while current_y < (self.settings.screen_height - 4 * alien_height):
-            # So long as the location to add can fits one more alien
+            # So long as the location to add can fit one more alien
             while current_x < (self.settings.screen_width - 2 * alien_width):
                 # Create new alien at the current_x and current_y
                 self._create_alien(current_x, current_y)
@@ -159,7 +157,7 @@ class AlienInvasion:
 
         """Update the fired bullets"""
         # bullet.sprites() method returns a list of all sprites in the group of
-        # bullets. loop thru them and do .draw_bullet()
+        # bullets. loop through them and do .draw_bullet()
         # placed before the ship, so bullets do not start out on top of ship
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
