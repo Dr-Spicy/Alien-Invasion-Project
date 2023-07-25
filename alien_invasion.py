@@ -97,6 +97,24 @@ class AlienInvasion:
         # A print to show how many bullets current exist in the game
         # print(len(self.bullets))
 
+        # Deal with bullet-alien collisions and when fleet is empty, kill all
+        # bullets and repop a new fleet.
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collision"""
+        # Remove any bullets and aliens in collisions
+        # return a dictionary with key being the
+        #         # colliding bullets and value being the colliding alien
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,
+                                                True, True)
+        # check if the aliens group empty
+        if not self.aliens:
+            # Destroy exisiting bullets and create new fleet
+            self.bullets.empty() # .empty method empty the sprites group
+            self._create_fleet()
+
+
     def _check_events(self):
         """Respond to keypresses and mouse events."""
 
