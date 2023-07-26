@@ -6,6 +6,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
+from button import Button
 
 
 class AlienInvasion:
@@ -18,6 +19,8 @@ class AlienInvasion:
         pygame.init()
         # Keep game running if in active state
         self.running = True
+        # Start Alien Invasion in an active state.
+        self.game_active = False
         """We make a clock and ensure it ticks once on each pass of the loop. 
         If the loop processes faster than the rate we define, pygame will 
         calculate the correct amount of time to pause so that the game runs 
@@ -56,8 +59,8 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
         # Create the fleet using _create_fleet() method
         self._create_fleet()
-        # Start Alien Invasion in an active state.
-        self.game_active = True
+        # Create the play button
+        self.play_button = Button(self, 'Play')
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -123,6 +126,9 @@ class AlienInvasion:
             # Use a keyup to reflect a continuous movement
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            # Use a mousebuttondown to look for click
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self._check_mousebuttondown_events()
 
     def _create_fleet(self):
         """Create the fleet of aliens"""
@@ -236,6 +242,12 @@ class AlienInvasion:
         The draw() requires one argument: a surface to draw on."""
         self.aliens.draw(self.screen)
 
+        """Draw the play button if the game is inactive. We draw it after all
+        other elements have been draw but b4 flipping a new screen, so that the
+        play button remains visible above all."""
+        if not self.game_active:
+            self.play_button.draw_button()
+
         # Make the most recently drawn screen visible.
         pygame.display.flip()
 
@@ -262,6 +274,18 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
+    def _check_mousebuttondown_events(self):
+        # Get the mouse position, which returns a tuple of x- and y- pos when mouse
+        # is clicked
+        mouse_pos = pygame.mouse.get_pos()
+        # Send the coordinates to the new method _check_play_button()
+        self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the play clicks Play"""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.game_active = True
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
