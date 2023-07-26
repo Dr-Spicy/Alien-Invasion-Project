@@ -200,6 +200,8 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.game_active = False
+            # Make the cursor visible again
+            pygame.mouse.set_visible(True)
 
     def _update_alien(self):
         """ Check if the fleet is at an edge,Update the positions of the
@@ -284,8 +286,23 @@ class AlienInvasion:
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the play clicks Play"""
-        if self.play_button.rect.collidepoint(mouse_pos):
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        # Game will only restart if clicked and game is INactive
+        if button_clicked and not self.game_active:
+            # Reset the game stats
+            self.stats.reset_stats()
             self.game_active = True
+
+            # Remove any remaining bullets and aliens
+            self.bullets.empty()
+            self.aliens.empty()
+
+            # Repop a new phalanx and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+
+            # Hide the mouse cursor
+            pygame.mouse.set_visible(False)
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
