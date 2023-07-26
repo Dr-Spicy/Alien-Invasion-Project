@@ -23,23 +23,19 @@ class AlienInvasion:
         calculate the correct amount of time to pause so that the game runs 
         at a consistent rate."""
         self.clock = pygame.time.Clock()
-
         self.settings = Settings()
-
         # Call this display.set_mode to create a display window, on which we
         # sho w the graphics of the game. We assign this display window to
         # the self. display window, and it will be available in all methods
         # in the class.
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
-
         """If we wanna run in full-screen, use the rest codes."""
         '''
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         '''
-
         # This attribute is called a surface, aka a part of the screen where
         # game elements are displayed. The surface returned by
         # display.set_mode reps the entire game window. Once the game's
@@ -47,25 +43,19 @@ class AlienInvasion:
         # pass of the loop, so it can be updated with any changes trigger by
         # user input
         pygame.display.set_caption("Alien Invasion")
-
         # Create an instance to store game statistics
         self.stats = GameStats(self)
-
         # Make an instance of Ship after the screen has been created
         # The self argument here refers to an instance of 'AlienInvasion'
         self.ship = Ship(self)
-
         # Make an instance of pygame.sprite.Group class to store manage all
         # active bullets, and bullets get drawn and updated each loop.
         self.bullets = pygame.sprite.Group()
-
         # Make another instance of pygame.sprite.Group class to store manage all
         # active aliens
         self.aliens = pygame.sprite.Group()
-
         # Create the fleet using _create_fleet() method
         self._create_fleet()
-
         # Start Alien Invasion in an active state.
         self.game_active = True
 
@@ -78,24 +68,24 @@ class AlienInvasion:
             if self.game_active:
                 """Update the location of the ship"""
                 self.ship.update()
-
-                """Get rid of bullets out of screen"""
+                """Update position of bullets and get rid of ones past the 
+                top"""
                 self._update_bullets()
-
                 """Move the alien fleet right and downwards"""
                 self._update_alien()
 
             """Re-draw the screen during each pass through the loop by the 
                        fill method."""
             self._update_screen()
-
             """the tick() method takes one argument: the frame rate fro the 
             game."""
             self.clock.tick(60)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of ones past the top"""
-
+        # Update bullet positions.
+        self.bullets.update()
+        # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():
             if bullet.rect.bottom < 0:
                 # If a bullet reaches top, remove
@@ -126,12 +116,10 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-
             # Set the method to control the FLAG of ship to move right
             # Use a single keydown to register a single movement
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-
             # Use a keyup to reflect a continuous movement
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
@@ -143,7 +131,6 @@ class AlienInvasion:
         # Spacing between aliens is one alien's width and one alien's height
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
-
         # register the x and y location to add a new alien
         # assign the first location as 1 width from the left
         current_x, current_y = alien_width, alien_height
@@ -197,19 +184,16 @@ class AlienInvasion:
         # Decrement ships_left.
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
-
             # Get rid of any remaining bullets and aliens
             self.bullets.empty()
             self.aliens.empty()
-
             # Create a new fleet and center the ship
             self._create_fleet()
             self.ship.center_ship()
-
             # Pause
             sleep(0.5)
         else:
-            self.running = False
+            self.game_active = False
 
     def _update_alien(self):
         """ Check if the fleet is at an edge,Update the positions of the

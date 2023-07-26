@@ -10,7 +10,6 @@ class Alien(Sprite):
 
         # Inherit from the parent class
         super().__init__()
-
         # Get the screen and settings from the game instance
         self.screen = ai_game.screen
         self.settings = ai_game.settings
