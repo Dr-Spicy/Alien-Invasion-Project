@@ -112,6 +112,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new fleet
             self.bullets.empty()  # .empty method empty the sprites group
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _check_events(self):
         """Respond to key-presses and mouse events."""
@@ -278,8 +279,8 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _check_mousebuttondown_events(self):
-        # Get the mouse position, which returns a tuple of x- and y- pos when mouse
-        # is clicked
+        # Get the mouse position, which returns a tuple of x- and y- pos when
+        # mouse is clicked
         mouse_pos = pygame.mouse.get_pos()
         # Send the coordinates to the new method _check_play_button()
         self._check_play_button(mouse_pos)
@@ -290,6 +291,7 @@ class AlienInvasion:
         # Game will only restart if clicked and game is INactive
         if button_clicked and not self.game_active:
             # Reset the game stats
+            self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.game_active = True
 
