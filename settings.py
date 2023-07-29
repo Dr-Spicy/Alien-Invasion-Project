@@ -27,6 +27,8 @@ class Settings:
         self.difficulty_lvl = 'medium'
         # how quickly the game speeds up
         self.speedup_scale = 1.2
+        # How quickly the alien point values increase
+        self.score_scale = 1.5
         # init the attr that need to change throughout the game
         self.initialize_dynamic_settings()
 
@@ -55,11 +57,17 @@ class Settings:
         # This is more elegent than using a if-elif statement
         self.fleet_direction = 1
 
+        # Scoreing settings
+        self.alien_pts = 50
+
     def increase_speed(self):
-        """Increase the speed settings"""
+        """Increase the speed settings and alien pts value"""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+        self.alien_pts = int(self.alien_pts * self.score_scale)
+        # check the alien pts
+        # print(self.alien_pts)
 
     def set_difficulty(self, diff_set):
         if diff_set == 'easy':

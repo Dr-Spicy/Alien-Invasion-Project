@@ -7,6 +7,7 @@ from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -46,8 +47,9 @@ class AlienInvasion:
         # pass of the loop, so it can be updated with any changes trigger by
         # user input
         pygame.display.set_caption("Alien Invasion")
-        # Create an instance to store game statistics
+        # Create an instance to store game statistics and the scoreboard
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
         # Make an instance of Ship after the screen has been created
         # The self argument here refers to an instance of 'AlienInvasion'
         self.ship = Ship(self)
@@ -134,6 +136,13 @@ class AlienInvasion:
         #         # colliding bullets and value being the colliding alien
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,
                                                 True, True)
+        # Update the score info and image
+        if collisions:
+            for aliens in collisions.values(): # values of a dict,
+                # item is a bullet: aliens.
+                self.stats.score += self.settings.alien_pts * len(aliens)
+            self.sb.prep_score()
+
         # check if the aliens group empty
         if not self.aliens:
             # Destroy existing bullets and create new fleet
@@ -272,6 +281,9 @@ class AlienInvasion:
         The draw() requires one argument: a surface to draw on."""
         self.aliens.draw(self.screen)
 
+        """Draw the scoreboard"""
+        self.sb.show_score()
+
         """Draw the play button if the game is inactive. We draw it after all
         other elements have been draw but b4 flipping a new screen, so that the
         play button remains visible above all."""
@@ -280,6 +292,8 @@ class AlienInvasion:
             self.easy_button.draw_button()
             self.medium_button.draw_button()
             self.challenge_button.draw_button()
+
+
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
@@ -334,6 +348,7 @@ class AlienInvasion:
         # Reset the game stats
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
+        self.sb.prep_score()
         self.game_active = True
 
         # Remove any remaining bullets and aliens
