@@ -142,6 +142,7 @@ class AlienInvasion:
                 # item is a bullet: aliens.
                 self.stats.score += self.settings.alien_pts * len(aliens)
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         # check if the aliens group empty
         if not self.aliens:
