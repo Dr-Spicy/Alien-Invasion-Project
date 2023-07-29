@@ -22,7 +22,9 @@ class Settings:
         # edge
         self.fleet_drop_speed = 10
 
-
+        # Initialize the game's dynamic
+        # set the diff lvl
+        self.difficulty_lvl = 'medium'
         # how quickly the game speeds up
         self.speedup_scale = 1.2
         # init the attr that need to change throughout the game
@@ -30,9 +32,25 @@ class Settings:
 
     def initialize_dynamic_settings(self):
         """Initialize settings that change throughout games"""
-        self.ship_speed = 2. +5
-        self.bullet_speed = 3.
-        self.alien_speed = 1.0
+        if self.difficulty_lvl == 'easy':
+            self.ship_limit = 4
+            self.bullet_allowed = 7
+            self.ship_speed = .75
+            self.bullet_speed = 1.5
+            self.alien_speed = 0.5
+        elif self.difficulty_lvl == 'medium':
+            self.ship_limit = 3
+            self.bullet_allowed = 5
+            self.ship_speed = 1.5
+            self.bullet_speed = 3.
+            self.alien_speed = 1.
+        elif self.difficulty_lvl == 'challenging':
+            self.ship_limit = 2
+            self.bullet_allowed = 3
+            self.ship_speed = 3.
+            self.bullet_speed = 6.
+            self.alien_speed = 2.5
+
         # fleet direction of 1 represents right, ; -1 reps left
         # This is more elegent than using a if-elif statement
         self.fleet_direction = 1
@@ -42,3 +60,12 @@ class Settings:
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+
+    def set_difficulty(self, diff_set):
+        if diff_set == 'easy':
+            print('easy')
+        elif diff_set == 'medium':
+            print('medium')
+        elif diff_set == 'challenging':
+            print('challenging')
+

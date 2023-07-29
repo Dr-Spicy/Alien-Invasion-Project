@@ -3,16 +3,18 @@ import pygame.font
 class Button:
     """A class to build buttons for the game"""
 
-    def __init__(self, ai_game, msg):
+    def __init__(self, ai_game, msg, width=200, height=50, font_size = 40,
+                 button_color=(0, 35, 120), text_color=(255, 255, 255),
+                 ):
         """Initialize button attributes"""
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
 
         # Set the dimensions and properties of the button.
-        self.width, self.height = 200, 50
-        self.button_color = (0, 35, 120)
-        self.text_color = (255, 255, 255)
-        self.font = pygame.font.SysFont(None, 48)
+        self.width, self.height = width, height
+        self.button_color = button_color
+        self.text_color = text_color
+        self.font = pygame.font.SysFont(None, font_size)
 
         # Build the button's rect object and center it
         self.rect = pygame.Rect(0, 0, self.width, self.height)
@@ -35,3 +37,7 @@ class Button:
         # call screen.blit() to draw the button text image to the screen at the
         # msg_image_rect position
         self.screen.blit(self.msg_image, self.msg_image_rect)
+
+    def _update_msg_position(self):
+        """If the button has been moved, the text needs to be moved as well."""
+        self.msg_image_rect.center = self.rect.center

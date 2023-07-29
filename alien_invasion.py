@@ -60,7 +60,12 @@ class AlienInvasion:
         # Create the fleet using _create_fleet() method
         self._create_fleet()
         # Create the play button
-        self.play_button = Button(self, 'Play')
+        self.play_button = Button(self, 'Play', width=280, font_size=48,
+                                  button_color=(255, 35, 20),
+                                  text_color=(255, 255, 255)
+                                  )
+        # Make difficulty lvl buttons
+        self._make_difficulty_buttons()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -83,6 +88,28 @@ class AlienInvasion:
             """the tick() method takes one argument: the frame rate fro the 
             game."""
             self.clock.tick(60)
+
+    def _make_difficulty_buttons(self):
+        """Make buttons that allow player to select diff lvls"""
+        self.easy_button = Button(self, 'Easy')
+        self.medium_button = Button(self, 'Medium')
+        self.challenge_button = Button(self, 'Difficult')
+
+        # Position all 3 buttons to align
+        self.easy_button.rect.top = (
+            self.play_button.rect.top + 1.5 * self.play_button.rect.height
+        )
+        self.easy_button._update_msg_position()
+
+        self.medium_button.rect.top = (
+            self.easy_button.rect.top + 1.5 * self.easy_button.rect.height
+        )
+        self.medium_button._update_msg_position()
+
+        self.challenge_button.rect.top = (
+            self.medium_button.rect.top + 1.5 * self.medium_button.rect.height
+        )
+        self.challenge_button._update_msg_position()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of ones past the top"""
@@ -250,6 +277,9 @@ class AlienInvasion:
         play button remains visible above all."""
         if not self.game_active:
             self.play_button.draw_button()
+            self.easy_button.draw_button()
+            self.medium_button.draw_button()
+            self.challenge_button.draw_button()
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
@@ -261,6 +291,10 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
+
+        # Start on P
+        elif event.key == pygame.K_p and not self.game_active:
+            self._start_game()
 
         # Quit on ESC
         elif event.key == pygame.K_ESCAPE:
@@ -284,27 +318,47 @@ class AlienInvasion:
         mouse_pos = pygame.mouse.get_pos()
         # Send the coordinates to the new method _check_play_button()
         self._check_play_button(mouse_pos)
+        # send the coor to the new method _check_diff_lvl()
+        self._check_diff_lvl(mouse_pos)
+
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the play clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         # Game will only restart if clicked and game is INactive
         if button_clicked and not self.game_active:
-            # Reset the game stats
-            self.settings.initialize_dynamic_settings()
-            self.stats.reset_stats()
-            self.game_active = True
+           self._start_game()
 
-            # Remove any remaining bullets and aliens
-            self.bullets.empty()
-            self.aliens.empty()
+    def _start_game(self):
+        """Restart the game"""
+        # Reset the game stats
+        self.settings.initialize_dynamic_settings()
+        self.stats.reset_stats()
+        self.game_active = True
 
-            # Repop a new phalanx and center the ship
-            self._create_fleet()
-            self.ship.center_ship()
+        # Remove any remaining bullets and aliens
+        self.bullets.empty()
+        self.aliens.empty()
 
-            # Hide the mouse cursor
-            pygame.mouse.set_visible(False)
+        # Repop a new phalanx and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Hide the mouse cursor
+        pygame.mouse.set_visible(False)
+
+    def _check_diff_lvl(self, mouse_pos):
+        """Set the corresponding difficult lvl"""
+        ez_clicked = self.easy_button.rect.collidepoint(mouse_pos)
+        me_clicked = self.medium_button.rect.collidepoint(mouse_pos)
+        hd_clicked = self.challenge_button.rect.collidepoint(mouse_pos)
+
+        if ez_clicked:
+            self.settings.difficulty_lvl = 'easy'
+        elif me_clicked:
+            self.settings.difficulty_lvl = 'medium'
+        elif hd_clicked:
+            self.settings.difficulty_lvl = 'challenging'
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
