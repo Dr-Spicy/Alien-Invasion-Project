@@ -1,7 +1,8 @@
 import pygame
+from pygame.sprite import Sprite
 
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
     """
     Pygame is efficient b/c it treats all shaped elements as rectangles(rects).
@@ -11,6 +12,7 @@ class Ship:
     def __init__(self, ai_game):  # ai_game refer to the current instance of the
         # AlienInvasion class.
         """Initialize the ship and set its starting position."""
+        super().__init__()
         # The screen background is inherited from the game as well as the
         # settings
         self.screen, self.settings = ai_game.screen, ai_game.settings
