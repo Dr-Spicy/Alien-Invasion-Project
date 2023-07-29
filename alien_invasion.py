@@ -99,17 +99,17 @@ class AlienInvasion:
 
         # Position all 3 buttons to align
         self.easy_button.rect.top = (
-            self.play_button.rect.top + 1.5 * self.play_button.rect.height
+                self.play_button.rect.top + 1.5 * self.play_button.rect.height
         )
         self.easy_button._update_msg_position()
 
         self.medium_button.rect.top = (
-            self.easy_button.rect.top + 1.5 * self.easy_button.rect.height
+                self.easy_button.rect.top + 1.5 * self.easy_button.rect.height
         )
         self.medium_button._update_msg_position()
 
         self.challenge_button.rect.top = (
-            self.medium_button.rect.top + 1.5 * self.medium_button.rect.height
+                self.medium_button.rect.top + 1.5 * self.medium_button.rect.height
         )
         self.challenge_button._update_msg_position()
 
@@ -138,7 +138,7 @@ class AlienInvasion:
                                                 True, True)
         # Update the score info and image
         if collisions:
-            for aliens in collisions.values(): # values of a dict,
+            for aliens in collisions.values():  # values of a dict,
                 # item is a bullet: aliens.
                 self.stats.score += self.settings.alien_pts * len(aliens)
             self.sb.prep_score()
@@ -294,8 +294,6 @@ class AlienInvasion:
             self.medium_button.draw_button()
             self.challenge_button.draw_button()
 
-
-
         # Make the most recently drawn screen visible.
         pygame.display.flip()
 
@@ -336,13 +334,12 @@ class AlienInvasion:
         # send the coor to the new method _check_diff_lvl()
         self._check_diff_lvl(mouse_pos)
 
-
     def _check_play_button(self, mouse_pos):
         """Start a new game when the play clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         # Game will only restart if clicked and game is INactive
         if button_clicked and not self.game_active:
-           self._start_game()
+            self._start_game()
 
     def _start_game(self):
         """Restart the game"""
