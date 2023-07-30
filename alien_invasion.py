@@ -1,5 +1,7 @@
 import pygame
+import json
 from time import sleep
+from pathlib import Path
 
 from settings import Settings
 from ship import Ship
@@ -99,17 +101,17 @@ class AlienInvasion:
 
         # Position all 3 buttons to align
         self.easy_button.rect.top = (
-                self.play_button.rect.top + 1.5 * self.play_button.rect.height
+            self.play_button.rect.top + 1.5 * self.play_button.rect.height
         )
         self.easy_button._update_msg_position()
 
         self.medium_button.rect.top = (
-                self.easy_button.rect.top + 1.5 * self.easy_button.rect.height
+            self.easy_button.rect.top + 1.5 * self.easy_button.rect.height
         )
         self.medium_button._update_msg_position()
 
         self.challenge_button.rect.top = (
-                self.medium_button.rect.top + 1.5 * self.medium_button.rect.height
+            self.medium_button.rect.top + 1.5 * self.medium_button.rect.height
         )
         self.challenge_button._update_msg_position()
 
@@ -151,7 +153,7 @@ class AlienInvasion:
             self._create_fleet()
             self.settings.increase_speed()
 
-            #Increase level
+            # Increase level
             self.stats.level += 1
             self.sb.prep_level()
 
@@ -160,7 +162,7 @@ class AlienInvasion:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                self._close_game()
             # Set the method to control the FLAG of ship to move right
             # Use a single keydown to register a single movement
             elif event.type == pygame.KEYDOWN:
@@ -316,10 +318,12 @@ class AlienInvasion:
 
         # Quit on ESC
         elif event.key == pygame.K_ESCAPE:
-            self.running = False
+            self._close_game()
+
+
 
         # Firing bullets on SPACE
-        elif event.key == pygame.K_SPACE:
+        elif event.key == pygame.K_SPACE and self.game_active:
             self._fire_bullet()
 
     def _check_keyup_events(self, event):
@@ -391,6 +395,14 @@ class AlienInvasion:
             # specific for Pygame groups.
             self.bullets.add(new_bullet)
 
+    def _close_game(self):
+        """writing the high score to a file and exit"""
+        high_score_in_store = self.stats.get_save_high_score()
+        if self.stats.high_score > high_score_in_store:
+            path = Path('game_saves.json')
+            contents = json.dumps(self.stats.high_score)
+            path.write_text(contents)
+        self.running = False
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
