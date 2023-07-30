@@ -360,9 +360,6 @@ class AlienInvasion:
         # Reset the game stats
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
-        # self.sb.prep_score()
-        # self.sb.prep_level()
-        # self.sb.prep_ships()
         self.sb.prep_images()
         self.game_active = True
 
