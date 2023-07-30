@@ -35,19 +35,19 @@ class Settings:
     def initialize_dynamic_settings(self):
         """Initialize settings that change throughout games"""
         if self.difficulty_lvl == 'easy':
-            self.ship_limit = 4
+            self.ship_limit = 3
             self.bullet_allowed = 7
             self.ship_speed = .75
             self.bullet_speed = 1.5
             self.alien_speed = 0.5
         elif self.difficulty_lvl == 'medium':
-            self.ship_limit = 3
+            self.ship_limit = 2
             self.bullet_allowed = 5
             self.ship_speed = 1.5
             self.bullet_speed = 3.
             self.alien_speed = 1.
         elif self.difficulty_lvl == 'challenging':
-            self.ship_limit = 2
+            self.ship_limit = 1
             self.bullet_allowed = 3
             self.ship_speed = 3.
             self.bullet_speed = 6.

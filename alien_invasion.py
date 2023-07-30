@@ -148,14 +148,19 @@ class AlienInvasion:
 
         # check if the aliens group empty
         if not self.aliens:
-            # Destroy existing bullets and create new fleet
-            self.bullets.empty()  # .empty method empty the sprites group
-            self._create_fleet()
-            self.settings.increase_speed()
+            # if yes, start a new level's game
+            self._start_new_level()
 
-            # Increase level
-            self.stats.level += 1
-            self.sb.prep_level()
+    def _start_new_level(self):
+        """Start a new level's game"""
+        # Destroy existing bullets and create new fleet
+        self.bullets.empty()  # .empty method empty the sprites group
+        self._create_fleet()
+        self.settings.increase_speed()
+
+        # Increase level
+        self.stats.level += 1
+        self.sb.prep_level()
 
     def _check_events(self):
         """Respond to key-presses and mouse events."""
@@ -355,9 +360,10 @@ class AlienInvasion:
         # Reset the game stats
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
-        self.sb.prep_score()
-        self.sb.prep_level()
-        self.sb.prep_ships()
+        # self.sb.prep_score()
+        # self.sb.prep_level()
+        # self.sb.prep_ships()
+        self.sb.prep_images()
         self.game_active = True
 
         # Remove any remaining bullets and aliens

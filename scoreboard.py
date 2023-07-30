@@ -21,10 +21,7 @@ class Scoreboard:
         self.font = pygame.font.SysFont(None, 40)
 
         # Prepare the initial score/high score/lvl/ship info
-        self.prep_score()
-        self.prep_high_score()
-        self.prep_level()
-        self.prep_ships()
+        self.prep_images()
 
     def prep_score(self):
         """Turn the score into a rendered image"""
@@ -88,3 +85,10 @@ class Scoreboard:
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.lvl_image, self.lvl_rect)
         self.ships.draw(self.screen)
+
+    def prep_images(self):
+        """Prepare the stats images"""
+        self.prep_score()
+        self.prep_high_score()
+        self.prep_level()
+        self.prep_ships()
