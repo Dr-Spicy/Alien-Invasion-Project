@@ -402,7 +402,7 @@ class AlienInvasion:
         """writing the high score to a file and exit"""
         high_score_in_store = self.stats.get_save_high_score()
         if self.stats.high_score > high_score_in_store:
-            path = Path('game_saves.json')
+            path = Path('__pycache__/game_saves.json')
             contents = json.dumps(self.stats.high_score)
             path.write_text(contents)
         self.running = False

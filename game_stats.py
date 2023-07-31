@@ -19,7 +19,7 @@ class GameStats:
 
     def get_save_high_score(self):
         """Retrieve the saved high score, if exists"""
-        path = Path('game_saves.json')
+        path = Path('__pycache__/game_saves.json')
         try:
             high_score_saved = json.loads(path.read_text())
             if high_score_saved is not None:
